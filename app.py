@@ -17,6 +17,12 @@ def visitor_info():
 	client_ip = request.headers.get('X-Requested-For')
 	if client_ip:
 		client_ip = client_ip.split(',')[0]
+
+	if not client_ip:
+		client_ip = request.headers.get('X-Requested-For')
+		if client_ip:
+			client_ip = client_ip.split(',')[0]
+
 	if not client_ip:
 		client_ip = request.remote_addr
 
@@ -32,6 +38,7 @@ def visitor_info():
 		return jsonify({"error": "your city was not loaded successfully"})
 
 	location = location_data.get('city') 
+	
 
 	weather_api_url = f'http://api.weatherapi.com/v1/current.json?key=31d8e3e2f00a4cd1be0135729240107&q={location}'
 	weather_response = requests.get(weather_api_url) 
