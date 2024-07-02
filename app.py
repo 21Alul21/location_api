@@ -1,4 +1,4 @@
-""" module containing an api endpoint that response only to a get request,
+""" module containing an api endpoint that responds only to a get request,
 it utilizes the `requests` library for making requests to other third party
 api endpoints 
 """
