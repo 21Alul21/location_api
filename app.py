@@ -19,7 +19,7 @@ def visitor_info():
 		client_ip = client_ip.split(',')[0]
 
 	if not client_ip:
-		client_ip = request.headers.get('X-Requested-For')
+		client_ip = request.headers.get('X-Forwarded-For')
 		if client_ip:
 			client_ip = client_ip.split(',')[0]
 
@@ -29,11 +29,9 @@ def visitor_info():
 	visitor_name = request.args.get('visitor_name')
 
 	location_api_url = 'http://ip-api.com/json/' + str(client_ip)
-	print(location_api_url)
 	location_response =  requests.get(location_api_url)
 	if location_response.status_code == 200:
 		location_data = location_response.json()
-		print(location_data)
 	else:
 		return jsonify({"error": "your city was not loaded successfully"})
 
@@ -44,13 +42,15 @@ def visitor_info():
 	weather_response = requests.get(weather_api_url) 
 	if weather_response.status_code == 200:
 		weather_data = weather_response.json()
-		temperature = weather_data.get('current')['temp_c']
+		temperature = weather_data.get('current')
+		temperature = temperature.get('temp_c')
+		
 	
 	
 
 	return jsonify({'client_ip': client_ip,
 			'location': location,
-			'greeting': f'Hello, {visitor_name}!, the temperature is\
+			'greeting': f'Hello, {visitor_name}!, the temperature is
 			{temperature} degrees celcius in {location}'
 	})
 
