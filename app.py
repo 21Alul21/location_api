@@ -33,7 +33,7 @@ def visitor_info():
 	if location_response.status_code == 200:
 		location_data = location_response.json()
 	else:
-		return jsonify({"error": "your city was not loaded successfully"})
+		return jsonify({"error": "your city was not loaded successfully"}), 400
 
 	location = location_data.get('city') 
 	
@@ -52,7 +52,7 @@ def visitor_info():
 			'location': location,
 			'greeting': f'Hello, {visitor_name}!, the temperature is
 			{temperature} degrees celcius in {location}'
-	})
+	}), 200
 
 if __name__ == '__main__':
 	app.run() 
